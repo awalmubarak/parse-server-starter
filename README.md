@@ -20,8 +20,8 @@ ADD ./path-to-certificate.p12 ${PARSE_HOME}
 
 ## First run
 
-    $ git clone https://github.com/LasaleFamine/docker-mongo-parse-server mongo-parse-server
-    $ cd mongo-parse-server
+    $ git clone https://github.com/awalmubarak/parse-server-starter.git
+    $ cd parse-server-starter
     $ docker-compose up # add -d for `demon` mode
 
 ## Build (if you make changes within the `Dockerfile`s)
@@ -30,4 +30,4 @@ ADD ./path-to-certificate.p12 ${PARSE_HOME}
 
 ## License
 
-MIT © LasaleFamine
+MIT © awalmubarak
