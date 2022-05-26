@@ -1,0 +1,12 @@
+{
+  "name": "parse-server",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --watch ./cloud/* index.js"
+  },
+  "dependencies": {
+    "parse-server": "5.2.1",
+    "express": "4.18.1",
+    "nodemon": "2.0.16"
+  }
+}

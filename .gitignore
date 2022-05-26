@@ -1,0 +1,4 @@
+*.cer
+db/
+parse-dashboard/node_modules/
+parse-server/node_modules/
