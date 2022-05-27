@@ -1,4 +1,4 @@
-FROM node
+FROM node:18.2.0
 
 USER node
 
@@ -19,4 +19,4 @@ RUN npm install
 
 EXPOSE ${PORT}
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "dev" ]
