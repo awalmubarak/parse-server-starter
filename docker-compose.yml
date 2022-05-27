@@ -3,26 +3,45 @@ services:
 
   mongo-parse-server:
     container_name: mongodb
+    restart: unless-stopped
     image: mongo
+    secrets:
+      - mongo_username
+      - mongo_password
+      - db_user
+      - db_pass
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongo_username
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo_password
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_USERNAME_FILE=/run/secrets/db_user
+      - MONGO_PASSWORD_FILE=/run/secrets/db_pass
+      - MONGO_DATABASE=todo_db
     volumes:
-      - ./db:/data/db
+      - ../db:/data/db
+      - ./mongo/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+    logging:
+        driver: "json-file"
+        options:
+            max-file: "5"
+            max-size: "10m"
+    networks:
+      - apps-network
   
   parse-server:
     container_name: parse-server
+    restart: unless-stopped
     build: ./parse-server
     links:
       - mongo-parse-server:mongo
+    secrets:
+      - db_user
+      - db_pass
     environment:
       - APP_ID=something_nice_and_secret
       - MASTER_KEY=long-secret-awesome
-      # - GCM_SENDER_ID=gcm_id
-      # - GCM_API_KEY=gcm_key
-      # - PFX_PATH_DEV=path_to_certificate_p12
-      # - PFX_PASS_DEV=passphrase_certificate
-      # - PFX_PATH_PROD=path_to_certificate_p12
-      # - PFX_PATH_PROD=passphrase_certificate
-      # - APP_BUNDLE_ID=bundle_id
-      # - IS_PRODUCTION=false
+      - DATABASE_USERNAME=username
+      - DATABASE_PASSWORD=password
     ports:
       - 1337:1337
     depends_on:
@@ -31,13 +50,33 @@ services:
     volumes:
       - ./parse-server/cloud/:/home/node/parse-server/cloud/
       - ./parse-server/logs/:/home/node/parse-server/logs/
+    networks:
+      - apps-network
   
   parse-dashboard:
     container_name: parse-dashboard
+    restart: unless-stopped
     build: ./parse-dashboard
     environment:
         - PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=1
         - ALLOW_INSECURE_HTTP=1
     ports:
         - 4040:4040
-    
+    networks:
+      - apps-network
+
+networks:
+  apps-network: 
+    driver: bridge
+
+secrets:
+  mongo_username:
+    file: ./mongo/mongo_user.txt
+  mongo_password:
+    file: ./mongo/mongo_password.txt
+  mongo_database:
+    file: ./mongo/mongo_database.txt
+  db_user:
+    file: ./mongo/db_user.txt
+  db_pass:
+    file: ./mongo/db_pass.txt

@@ -5,6 +5,9 @@ const app = express();
 const {
   APP_ID,
   MASTER_KEY,
+  DATABASE_URI,
+  DATABASE_USERNAME,
+  DATABASE_PASSWORD,
   // GCM_SENDER_ID,
   // GCM_API_KEY,
   // PFX_PATH_DEV,
@@ -16,31 +19,14 @@ const {
 } = process.env;
 
 const api = new ParseServer({
-  databaseURI: 'mongodb://mongo-parse-server/', // Connection string for your MongoDB database
+  databaseURI: DATABASE_URI || `mongodb://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@mongo/todo_db`, // Connection string for your MongoDB database
   appId: APP_ID,
   masterKey: MASTER_KEY,
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   fileKey: 'optionalFileKey',
-  serverURL: 'http://localhost:1337/parse', // Don't forget to change to https if needed
-  // push: {
-  //   android: {
-  //     senderId: GCM_SENDER_ID,
-  //     apiKey: GCM_API_KEY
-  //   },
-  //   ios: [
-  //     {
-  //       pfx: PFX_PATH_DEV, // The filename of private key and certificate in PFX or PKCS12 format from disk
-  //       passphrase: PFX_PASS_DEV, // optional password to your p12
-  //       bundleId: APP_BUNDLE_ID, // The bundle identifier associate with your app
-  //       production: false // Specifies which APNS environment to connect to: Production (if true) or Sandbox
-  //     },
-  //     {
-  //       pfx: PFX_PATH_PROD, // Prod PFX or P12
-  //       bundleId: PFX_PASS_PROD,
-  //       production: true // Prod
-  //     }
-  //   ]
-  // }
+  serverURL: 'http://parse:1337/parse', // Don't forget to change to https if needed
+  appName: 'Todo',
+  
 });
 
 // Serve the Parse API on the /parse URL prefix
