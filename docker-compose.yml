@@ -30,6 +30,7 @@ services:
         condition: service_started
     volumes:
       - ./parse-server/cloud/:/home/node/parse-server/cloud/
+      - ./parse-server/logs/:/home/node/parse-server/logs/
   
   parse-dashboard:
     container_name: parse-dashboard

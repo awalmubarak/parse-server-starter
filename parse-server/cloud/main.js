@@ -39,7 +39,11 @@ Parse.Cloud.define("averageStars", async (request) => {
     // headers: from the request that triggered the job
     // log: the ParseServer logger passed in the request
     // message: a function to update the status message of the job object
+    // console.log(request);
     const { params, headers, log, message } = request;
+    log.debug("This is debug message");
+    log.verbose("This is verbose message");
+    log.silly("This is silly message");
     message("I just started");
     return await doSomethingVeryLong(request);
   });
