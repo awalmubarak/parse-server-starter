@@ -32,8 +32,6 @@ services:
     container_name: parse-server
     restart: unless-stopped
     build: ./parse-server
-    links:
-      - mongo-parse-server:mongo
     secrets:
       - db_user
       - db_pass

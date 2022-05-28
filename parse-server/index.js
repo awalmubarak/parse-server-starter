@@ -19,7 +19,7 @@ const {
 } = process.env;
 
 const api = new ParseServer({
-  databaseURI: DATABASE_URI || `mongodb://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@mongo/todo_db`, // Connection string for your MongoDB database
+  databaseURI: DATABASE_URI || `mongodb://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@mongo-parse-server/todo_db`, // Connection string for your MongoDB database
   appId: APP_ID,
   masterKey: MASTER_KEY,
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
